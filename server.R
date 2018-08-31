@@ -51,15 +51,17 @@ server <- function(input, output) {
             ggplot(
                 displayedBenchs,
                 aes(
-                    commit_rev,
-                    time_in_nanos,
+                    x = as.POSIXct(timestamp, origin="1970-01-01"),
+                    y = time_in_nanos,
                     group=bench_name,
-                    color=bench_name
+                    color=bench_name,
+                    text=paste("commit:", commit_rev),
                 )) +
                 theme(axis.text.x = element_text(angle = 45)) +
                 theme(plot.margin = unit(c(1,1,1,1), "cm")) +
                 geom_line() +
-                geom_point()
+                geom_point() +
+                labs(x = "Date", y = "Mean time (ns)")
         } else {
             ggplot()
         }
