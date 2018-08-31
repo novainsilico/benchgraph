@@ -37,7 +37,7 @@ ui <- fluidPage(
           )
       ),
       mainPanel(
-          plotlyOutput(outputId = "plot")
+          plotlyOutput(outputId = "plot", height="100%")
 
       )
   )
@@ -57,6 +57,7 @@ server <- function(input, output) {
                     color=bench_name
                 )) +
                 theme(axis.text.x = element_text(angle = 45)) +
+                theme(plot.margin = unit(c(1,1,1,1), "cm")) +
                 geom_line() +
                 geom_point()
         } else {
