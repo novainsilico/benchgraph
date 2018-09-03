@@ -7,6 +7,7 @@ let
       p.rPackages.shiny p.rPackages.jsonlite
       p.rPackages.ggplot2 p.rPackages.plotly
       p.rPackages.shinyWidgets
+      p.rPackages.optparse
     ];
   };
 in

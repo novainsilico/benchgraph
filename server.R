@@ -1,25 +1,28 @@
 library(shiny)
 library(ggplot2)
 library(plotly)
+library(optparse)
 
 loadBenchmarks <- function(inFile) {
   benchs <- jsonlite::stream_in(file(inFile))
   return (benchs[order(benchs$timestamp),])
 }
 
-args = commandArgs(trailingOnly = TRUE)
-if (length(args) == 0) {
-    inputFile = "benchs.json"
-} else {
-    inputFile = args[1]
-}
+cli_options = list(
+  make_option(c("-i", "--input"), type="character", default="benchs.json",
+              help="File to load the bench results from [default= %default]",
+              metavar="file"
+              )
+  )
+
+opt_parser = OptionParser(option_list=cli_options)
+opt = parse_args(opt_parser)
+inputFile = opt$input
 
 benchs <- loadBenchmarks(inputFile)
 allBenchNames <- unique (benchs["bench_name"][,1])
 
 ui <- fluidPage(
-
-  # App title ----
   titlePanel("Simwork benchmarks"),
 
   sidebarLayout (
@@ -38,7 +41,6 @@ ui <- fluidPage(
       ),
       mainPanel(
           plotlyOutput(outputId = "plot", height="100%")
-
       )
   )
 )
