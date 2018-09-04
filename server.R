@@ -33,7 +33,9 @@ loadBenchmarks = function(inPath) {
 cli_options = list(
   make_option(c("-i", "--input"), type="character", default="benchs.json",
               help="File or directory to load the bench results from [default=%default]",
-              metavar="file"
+              metavar="file"),
+  make_option(c("-n", "--name"), type="character", default="My Shiny Benches",
+              help="Name of the application",
               )
   )
 
@@ -45,7 +47,7 @@ benchs <- loadBenchmarks(inputFile)
 allBenchNames <- unique (benchs["bench_name"][,1])
 
 ui <- fluidPage(
-  titlePanel("Simwork benchmarks"),
+  titlePanel(opt$name),
 
   sidebarLayout (
       sidebarPanel(
