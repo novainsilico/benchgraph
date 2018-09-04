@@ -3,14 +3,36 @@ library(ggplot2)
 library(plotly)
 library(optparse)
 
-loadBenchmarks <- function(inFile) {
-  benchs <- jsonlite::stream_in(file(inFile))
-  return (benchs[order(benchs$timestamp),])
+loadBenchmarksFromFile <- function(inFile) {
+  tryCatch ({
+    benchs <- jsonlite::stream_in(file(inFile))
+    return (benchs[order(benchs$timestamp),])
+  }, error = function(error) {
+    print(error)
+    return (data.frame())
+  })
+}
+
+loadBenchmarks = function(inPath) {
+  fileInfo <- file.info(inPath)
+  if (fileInfo$isdir == TRUE) {
+    allSubBenchs <- list()
+    for (subFile in list.files(inPath)) {
+      thisBenches <- loadBenchmarks(file.path(inPath, subFile))
+      if (length(thisBenches) != 0) {
+        allSubBenchs <- rbind(allSubBenchs, thisBenches)
+      }
+    }
+    allSubBenchs
+  }
+  else {
+    loadBenchmarksFromFile(inPath)
+  }
 }
 
 cli_options = list(
   make_option(c("-i", "--input"), type="character", default="benchs.json",
-              help="File to load the bench results from [default= %default]",
+              help="File or directory to load the bench results from [default=%default]",
               metavar="file"
               )
   )
