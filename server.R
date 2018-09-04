@@ -45,8 +45,14 @@ ui <- fluidPage(
   )
 )
 
-server <- function(input, output) {
+server <- function(input, output, session) {
     output$plot <- renderPlotly ({
+        query <- parseQueryString(session$clientData$url_search)
+        if (exists("reload", where=query)) {
+          benchs <- loadBenchmarks(inputFile)
+        } else if (exists("exit", where=query)) {
+          stopApp()
+        }
         enabledBenchmarkNames <- input$enabledBenchmarkNames
         displayedBenchs = benchs[benchs$bench_name %in% enabledBenchmarkNames, ]
         if (length(enabledBenchmarkNames) > 0) {
