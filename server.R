@@ -53,7 +53,7 @@ server <- function(input, output) {
             ggplot(
                 displayedBenchs,
                 aes(
-                    x = as.POSIXct(timestamp, origin="1970-01-01"),
+                    x = as.POSIXct(timestamp, origin="1970-01-01", tz = "GMT"),
                     y = time_in_nanos,
                     group=bench_name,
                     color=bench_name,
