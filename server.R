@@ -2,6 +2,7 @@ library(shiny)
 library(ggplot2)
 library(plotly)
 library(optparse)
+library(purrr)
 
 loadBenchmarksFromFile <- function(inFile) {
   tryCatch ({
@@ -13,37 +14,38 @@ loadBenchmarksFromFile <- function(inFile) {
   })
 }
 
-loadBenchmarks = function(inPath) {
-  fileInfo <- file.info(inPath)
-  if (fileInfo$isdir == TRUE) {
-    allSubBenchs <- list()
-    for (subFile in list.files(inPath)) {
-      thisBenches <- loadBenchmarks(file.path(inPath, subFile))
-      if (length(thisBenches) != 0) {
-        allSubBenchs <- rbind(allSubBenchs, thisBenches)
-      }
+loadBenchmarks = function(inPaths) {
+  allSubBenchs <- list()
+  for (inPath in inPaths) {
+    fileInfo <- file.info(inPath)
+    if (fileInfo$isdir == TRUE) {
+      childFiles <- map(list.files(inPath), function(x) { file.path(inPath, x) })
+      thisBenches <- loadBenchmarks(childFiles)
+    } else {
+      thisBenches <- loadBenchmarksFromFile(inPath)
     }
-    allSubBenchs
+    if (length(thisBenches) != 0) {
+      allSubBenchs <- rbind(allSubBenchs, thisBenches)
+    }
   }
-  else {
-    loadBenchmarksFromFile(inPath)
-  }
+  allSubBenchs
 }
 
 cli_options = list(
-  make_option(c("-i", "--input"), type="character", default="benchs.json",
-              help="File or directory to load the bench results from [default=%default]",
-              metavar="file"),
   make_option(c("-n", "--name"), type="character", default="My Shiny Benches",
               help="Name of the application",
               )
   )
 
-opt_parser = OptionParser(option_list=cli_options)
-opt = parse_args(opt_parser)
+opt_parser = OptionParser(
+  option_list=cli_options,
+  usage = "%prog [options] file1 ... fileN",
+  description = "Serves a graph from the benchmark results given as input"
+)
+opt = parse_args(opt_parser, positional_arguments=c(0,Inf))
 inputFile = opt$input
 
-benchs <- loadBenchmarks(inputFile)
+benchs <- loadBenchmarks(opt$args)
 allBenchNames <- unique (benchs["bench_name"][,1])
 
 ui <- fluidPage(

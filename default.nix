@@ -8,6 +8,7 @@ let
       p.rPackages.ggplot2 p.rPackages.plotly
       p.rPackages.shinyWidgets
       p.rPackages.optparse
+      p.rPackages.purrr
     ];
   };
 in
