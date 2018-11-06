@@ -95,7 +95,7 @@ server <- function(input, output, session) {
                 theme(plot.margin = unit(c(1,1,1,1), "cm")) +
                 geom_line() +
                 geom_point() +
-                labs(x = "Date", y = "Mean time (ns)")
+                labs(x = "Date", y = "Mean time (s)")
         } else {
             ggplot()
         }
