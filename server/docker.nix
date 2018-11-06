@@ -3,17 +3,18 @@
 let
   p = nixpkgs;
   benchgraph = import ./default.nix { inherit nixpkgs; };
+  tmpDir = p.writeTextFile {
+    name = "tmpdir";
+    destination = "/tmp/.touch";
+    text = "";
+  };
 in
 
-p.dockerTools.buildImage {
+p.dockerTools.buildLayeredImage {
   name = "benchgraph";
-  contents = benchgraph;
-
-  runAsRoot = ''
-    mkdir -p /tmp
-  '';
+  contents = tmpDir;
 
   config = {
-    Cmd = [ "/bin/benchgraph" ];
+    Cmd = [ "${benchgraph}/bin/benchgraph" "/benchs" ];
   };
 }
