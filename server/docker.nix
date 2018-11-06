@@ -1,4 +1,4 @@
-{ nixpkgs ? import <nixpkgs> {} }:
+{ nixpkgs ? import ../nixpkgs.nix {} }:
 
 let
   p = nixpkgs;
