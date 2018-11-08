@@ -11,7 +11,8 @@ let
 in
 
 p.dockerTools.buildLayeredImage {
-  name = "benchgraph";
+  name = "novadiscovery/benchgraph";
+  tag = "latest";
   contents = tmpDir;
 
   config = {

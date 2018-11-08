@@ -1,0 +1,25 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: nixos/nix:2.1.3
+    steps:
+      - checkout
+      - run:
+          name: System dependencies
+          command: |
+            apk update --no-progress && apk --no-progress add bash ca-certificates docker
+      - run:
+          name: Build image
+          command: |
+            nix build -f nix server/docker.nix
+      - setup_remote_docker:
+            docker_layer_caching: true
+      - run:
+          name: Push image
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker load -t < result
+            docker tag novadiscovery/benchgraph:latest novadiscovery/benchgraph:$CIRCLE_BRANCH
+            docker push novadiscovery/benchgraph:$CIRCLE_BRANCH
