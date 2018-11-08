@@ -26,3 +26,45 @@ Now, here's a screenshot of `benchgraph` in action on one of our internal
 benchmark suite:
 
 ![](http://www.image-share.com/upload/3872/158.png)
+
+## Wah, I'm conviced! How do I use it?
+
+To use this, just follow these two simple steps:
+
+1. Export your benchmarks results to the format accepted by the `benchgraph`
+  server
+2. Run the server
+
+### Export your results
+
+The benchgraph server reads the benchmarks results as an array in
+[nd-json](http://ndjson.org/) format, where each line contains a record of the
+form (without the newlines obviously):
+
+```json
+{
+  "bench_name": "MyBench";
+  "commit_rev": "Id of the commit";
+  "timestamp": "the date of the commit";
+  "time_in_nanos": "Duration of the benchmark";
+}
+```
+
+We provide adapters for some benchmarking frameworks (only
+[criterion](http://www.serpentine.com/criterion/) at the moment, but you're
+welcome to add more) so that the export is one simple command line.
+
+### Run the server
+
+The server is provided as a docker image.
+
+If your benchmark results are all in the `benchmarks` directory, you can simply
+run:
+
+```sh
+docker pull novadiscovery/benchgraph
+docker run \
+  -p 8123:8123
+  -v $PWD/benchmarks:/benchmarks novadiscovery/benchmarks \
+  /bin/benchgraph /benchmarks
+```
