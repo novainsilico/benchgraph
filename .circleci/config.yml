@@ -13,7 +13,7 @@ jobs:
       - run:
           name: Build image
           command: |
-            nix build -f nix server/docker.nix
+            nix build -f server/docker.nix
       - setup_remote_docker:
             docker_layer_caching: true
       - run:
