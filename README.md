@@ -62,9 +62,9 @@ If your benchmark results are all in the `benchmarks` directory, you can simply
 run:
 
 ```sh
-docker pull novadiscovery/benchgraph
+docker pull benchgraph/benchgraph:master
 docker run \
   -p 8123:8123
-  -v $PWD/benchmarks:/benchmarks novadiscovery/benchmarks \
+  -v $PWD/benchmarks:/benchmarks benchgraph/benchgraph:master \
   /bin/benchgraph /benchmarks
 ```
