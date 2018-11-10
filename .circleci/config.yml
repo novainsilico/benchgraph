@@ -20,6 +20,6 @@ jobs:
           name: Push image
           command: |
             docker login -u $DOCKER_USER -p $DOCKER_PASS
-            docker load -t < result
+            docker load < result
             docker tag novadiscovery/benchgraph:latest novadiscovery/benchgraph:$CIRCLE_BRANCH
             docker push novadiscovery/benchgraph:$CIRCLE_BRANCH
