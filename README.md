@@ -1,6 +1,6 @@
 # Benchgraph
 
-Easily visualisation of the evolution of your benchmarks.
+Easy visualisation of the evolution of your benchmarks.
 
 [![CircleCI](https://circleci.com/gh/novadiscovery/benchgraph/tree/master.svg?style=svg)](https://circleci.com/gh/novadiscovery/benchgraph/tree/master)
 
