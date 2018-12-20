@@ -17,7 +17,7 @@ That's what `Benchgraph` is for.
 
 ## Enough jabbing, I want nice pictures and buzzwords
 
-All right, all righ.
+All right, all right.
 
 First, here's a picture of a [blockchain-generated
 cat](https://www.cryptokitties.co/):
@@ -29,7 +29,7 @@ benchmark suite:
 
 ![](http://www.image-share.com/upload/3872/158.png)
 
-## Wah, I'm conviced! How do I use it?
+## Wah, I'm convinced! How do I use it?
 
 To use this, just follow these two simple steps:
 
